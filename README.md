@@ -95,6 +95,5 @@ streamlit run app.py
 
 ## Author
 
-Eesha Mallikarjun
-Computer Science (AI & ML)
-JNTUH
+Eesha 
+
