@@ -1,6 +1,6 @@
-streamlit
-pandas
-numpy
-scikit-learn
-imbalanced-learn
-joblib
+app.py
+fraud_model.pkl
+requirements.txt
+runtime.txt
+random_forest.py
+README.md
