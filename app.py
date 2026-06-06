@@ -22,7 +22,7 @@ st.set_page_config(
 @st.cache_resource
 def load_model():
 
-    df = pd.read_csv("creditcard.csv")
+    df = pd.read_csv("creditcard_sample.csv")
 
     scaler = StandardScaler()
     df["Amount"] = scaler.fit_transform(df[["Amount"]])
@@ -46,7 +46,6 @@ def load_model():
     model.fit(X_train, y_train)
 
     return model
-
 model = load_model()
 
 # -----------------------------------
