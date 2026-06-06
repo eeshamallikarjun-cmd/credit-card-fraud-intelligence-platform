@@ -1,24 +1,48 @@
 import streamlit as st
-import joblib
 import numpy as np
 import pandas as pd
 from datetime import datetime
 
-# -----------------------------------
-# Page Configuration
-# -----------------------------------
-st.set_page_config(
-    page_title="Credit Card Fraud Intelligence Platform",
-    page_icon="💳",
-    layout="wide"
-)
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
 
 # -----------------------------------
 # Load Model
 # -----------------------------------
-model = joblib.load("fraud_model.pkl")
-# -----------------------------------
-# Sidebar
+@st.cache_resource
+def load_model():
+
+    df = pd.read_csv("creditcard.csv")
+
+    scaler = StandardScaler()
+    df["Amount"] = scaler.fit_transform(df[["Amount"]])
+
+    X = df.drop("Class", axis=1)
+    y = df["Class"]
+
+    smote = SMOTE(random_state=42)
+    X_resampled, y_resampled = smote.fit_resample(X, y)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_resampled,
+        y_resampled,
+        test_size=0.2,
+        random_state=42
+    )
+
+    model = RandomForestClassifier(
+        n_estimators=10,
+        random_state=42,
+        n_jobs=-1
+    )
+
+    model.fit(X_train, y_train)
+
+    return model
+
+model = load_model()
 # -----------------------------------
 
 st.sidebar.title("💳 Fraud Detection")
